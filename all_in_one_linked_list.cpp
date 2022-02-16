@@ -210,68 +210,79 @@ node* remove_all_duplicates(node* head)
 
 
 
-// node* swap_nodes_in_pair(node* head)
-// {
-//     node* ptr0 = head;
-//     int len = 0;
-//     while(ptr0!=NULL){
-//         ptr0 = ptr0->next;
-//         len++;
-//     }
-
-//     if(len==1 || len==0) return head;
-
-//     // reversing all nodes first;
-//     node* next_node = NULL;
-//     node* prev_node = NULL;
-//     node* curr_node = head;
+node* swap_nodes_in_pair(node* head)
+{
+    if(head==NULL || head->next==NULL){
+        return head;
+    }
     
-//     while(curr_node !=NULL){
-//         next_node = curr_node->next;
-//         curr_node->next = prev_node;
-//         prev_node = curr_node;
-//         curr_node = next_node;
-//     }
-//     head = prev_node;
-//     // reversing completed
+    if(head->next->next==NULL)
+    {
+        node* next_node = NULL;
+        node* prev_node = NULL;
+        node* curr_node = head;
 
-//     node* ptr1 = head;
-
-//     if(len%2==1)
-//     {
-//         ptr1 = ptr1->next;
-//     }
-
-//     int temp;
-
-//     while(true){
-//         temp = ptr1->data;
-//         ptr1->data = ptr1->next->data;
-//         ptr1->next->data = temp;
-
-//         if(ptr1->next->next!=NULL){
-//             ptr1 = ptr1->next->next;
-//         }
-//         else{
-//             break;
-//         }
-//     }
-
-//     // reversing again to get the correct output
-//     next_node = NULL;
-//     prev_node = NULL;
-//     curr_node = head;
+        while(curr_node !=NULL){
+            next_node = curr_node->next;
+            curr_node->next = prev_node;
+            prev_node = curr_node;
+            curr_node = next_node;
+        }
+        head = prev_node;
+        return head;
+    }
     
-//     while(curr_node !=NULL){
-//         next_node = curr_node->next;
-//         curr_node->next = prev_node;
-//         prev_node = curr_node;
-//         curr_node = next_node;
-//     }
-//     head = prev_node;
+    if(head->next->next->next==NULL){
+        node* next_node = NULL;
+        node* prev_node = NULL;
+        node* curr_node = head;
 
-//     return head;
-// }
+        while(curr_node !=NULL){
+            next_node = curr_node->next;
+            curr_node->next = prev_node;
+            prev_node = curr_node;
+            curr_node = next_node;
+        }
+        next_node = prev_node;
+        prev_node = prev_node->next;
+        prev_node->next->next = next_node;
+        next_node->next = NULL;
+        head = prev_node;
+        return head;
+    }
+    
+    
+    node* p1 = head;
+    node* p2 = head->next;
+    node* p3 = head->next->next;
+    node* p4 = head->next->next->next;
+    node* temp;
+    node* header = head->next;
+    
+    int count = 1;
+    
+    while(true){
+        p2->next = p1;
+        p1->next = p3;
+        p3->next = p4;
+        count++;
+
+        if(count%2==0){
+            temp = p1;
+            p1 = p3;
+            p3 = temp;
+        }
+        if(p4==NULL){
+            break;
+        }
+        
+        p4 = p4->next;
+        p3 = p3->next;
+        p2 = p2->next;
+        p1 = p1->next;
+    }
+    return header;
+}
 
 
 node* reverse_linked_list_from_m_node_to_n_node(node* head, int m, int n)
@@ -342,7 +353,7 @@ int main(){
         cout<<"10. Reverse the linked from m node to n node"<<endl;
         cout<<"11. Delete duplicate data/node"<<endl;
         cout<<"12. Delete all duplicate data/nodes"<<endl;
-        cout<<"13. Swap nodes in pair    -------in progress"<<endl;
+        cout<<"13. Swap nodes in pair "<<endl;
         cout<<"14. Exit"<<endl;
         cout<<endl<<endl;   
 
@@ -457,9 +468,9 @@ int main(){
                 break;
 
             case 13:
-                // head = swap_nodes_in_pair(head);
-                // traverse(head);
-                // cout<<endl<<endl;
+                head = swap_nodes_in_pair(head);
+                traverse(head);
+                cout<<endl<<endl;
                 break;
 
             case 14:
